@@ -43,6 +43,8 @@ class Config{
     
     ignoreDistantObject = true;
     
+    disableAutoShrink = true;
+    
     ///editorCfg
 
     //disableSceneSelector = true;
@@ -105,6 +107,7 @@ class Config{
         ["batchModeSubviewSize", JSON.parse],
         ["enableAutoRotateXY", this.toBool],
         ["autoUpdateInterpolatedBoxes", this.toBool],
+        ["disableAutoShrink", this.toBool],
     ];
 
     load()

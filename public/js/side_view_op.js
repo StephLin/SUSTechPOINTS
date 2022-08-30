@@ -515,6 +515,35 @@ class ProjectiveView{
     };
     //install_move_handler();
 
+    update_edge_handler()
+    {
+        [
+            {handle: this.handles.left, direction: {x:-1,y:0}},
+            {handle: this.handles.right, direction: {x:1, y:0}},
+            {handle: this.handles.top, direction: {x:0, y:1}},
+            {handle: this.handles.bottom, direction: {x:0, y:-1}},
+            {handle: this.handles.topleft, direction: {x:-1, y:1}},
+            {handle: this.handles.topright, direction: {x:1, y:1}},
+            {handle: this.handles.bottomleft, direction: {x:-1, y:-1}},
+            {handle: this.handles.bottomright, direction: {x:1, y:-1}},
+            {handle: this.handles.move, direction: null}
+        ].forEach(element => {
+            let handle = element.handle;
+            let direction = element.direction;
+            if (this.cfg.disableAutoShrink) {
+                handle.ondblclick = null;
+            } else {
+                handle.ondblclick = (event)=>{
+                    if (event.which!=1)
+                        return;
+                    event.stopPropagation();
+                    event.preventDefault();
+                    this.on_auto_shrink(direction); //if double click on 'move' handler, the directoin is null
+                };
+            }
+        });
+    }
+
     install_edge_hanler(name, handle, lines, direction)
     {
                                                        
@@ -540,14 +569,18 @@ class ProjectiveView{
         //     handle.onmouseleave = hide;
         // };
 
-        handle.ondblclick= (event)=>{
-            if (event.which!=1)
-                return;
-            event.stopPropagation();
-            event.preventDefault();
-            this.on_auto_shrink(direction); //if double click on 'move' handler, the directoin is null
-            
-        };
+        if (this.cfg.disableAutoShrink) {
+            handle.ondblclick = null;
+        } else {
+            handle.ondblclick = (event)=>{
+                if (event.which!=1)
+                    return;
+                event.stopPropagation();
+                event.preventDefault();
+                this.on_auto_shrink(direction); //if double click on 'move' handler, the directoin is null
+                
+            };
+        }
 
         handle.onmousedown = (event)=>{
             if (event.which!=1)
@@ -1499,7 +1532,12 @@ class ProjectiveViewOps{
             this.z_view_handle.update_view_handle(this.views[0].getViewPort(), {x: this.box.scale.y, y:this.box.scale.x}, {x: boxPos.x, y: boxPos.y}, this.box.rotation.z);
             this.y_view_handle.update_view_handle(this.views[1].getViewPort(), {x: this.box.scale.x, y:this.box.scale.z});
             this.x_view_handle.update_view_handle(this.views[2].getViewPort(), {x: this.box.scale.y, y:this.box.scale.z});
+
         }
+
+        this.z_view_handle.update_edge_handler();
+        this.y_view_handle.update_edge_handler();
+        this.x_view_handle.update_edge_handler();
     };
 
 };

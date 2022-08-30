@@ -134,6 +134,12 @@ class ConfigUi{
             return false;
         },
 
+        '#cfg-disable-auto-shrink-checkbox': (event)=>{
+            let checked = event.currentTarget.checked;
+            pointsGlobalConfig.setItem("disableAutoShrink", checked);
+            return false;
+        },
+
         "#cfg-color-points-select": (event)=>{
             let value = event.currentTarget.value;
             pointsGlobalConfig.setItem("color_points", value);
@@ -324,6 +330,7 @@ class ConfigUi{
         this.menu.querySelector("#cfg-data-preload-checkbox").checked = pointsGlobalConfig.enablePreload;
         this.menu.querySelector("#cfg-auto-rotate-xy-checkbox").checked = pointsGlobalConfig.enableAutoRotateXY;
         this.menu.querySelector("#cfg-auto-update-interpolated-boxes-checkbox").checked = pointsGlobalConfig.autoUpdateInterpolatedBoxes;
+        this.menu.querySelector("#cfg-disable-auto-shrink-checkbox").checked = pointsGlobalConfig.disableAutoShrink;
     }
 
 
